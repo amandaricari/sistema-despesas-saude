@@ -5,7 +5,7 @@ import os
 
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="centered")
 
-# Estilo visual com tema claro forçado e botões/ícones personalizados
+# Estilo completo (botão azul, ícone de senha azul, barra superior escondida)
 st.markdown("""
     <style>
         body, .stApp {
@@ -24,9 +24,15 @@ st.markdown("""
             border: 1px solid #cccccc !important;
         }
 
-        .stTextInput > div > div > input {
+        .stTextInput > div > div > input,
+        .stPassword > div > div > input {
             background-color: white !important;
             color: black !important;
+        }
+
+        .stPassword svg {
+            color: #004C98 !important;
+            fill: #004C98 !important;
         }
 
         button[kind="primary"] {
@@ -35,15 +41,6 @@ st.markdown("""
             border-radius: 6px;
             padding: 0.5rem 1rem;
             font-weight: bold;
-        }
-
-        .stPassword > div > div > input {
-            background-color: white !important;
-            color: black !important;
-        }
-
-        .stPassword svg {
-            color: #004C98 !important;
         }
 
         header, footer, .css-18ni7ap {
