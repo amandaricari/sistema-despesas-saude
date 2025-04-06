@@ -5,7 +5,7 @@ import os
 
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="centered")
 
-# Estilo visual aprimorado (botões, sidebar, selects, etc.)
+# Estilo visual completo e padronizado
 st.markdown("""
     <style>
         body, .stApp {
@@ -17,13 +17,14 @@ st.markdown("""
             visibility: hidden;
         }
 
-        /* Labels e textos */
-        label, .css-1c7y2kd, .css-1bzt6gz, .css-1v0mbdj, .css-qbe2hs, .css-1wvake5, .css-16idsys {
+        label, .css-1c7y2kd, .css-1bzt6gz, .css-1v0mbdj,
+        .css-qbe2hs, .css-1wvake5, .css-16idsys,
+        .stRadio > div > label,
+        .stRadio div[role="radiogroup"] > label {
             color: #004C98 !important;
             font-weight: 500 !important;
         }
 
-        /* Inputs */
         input, select, textarea {
             background-color: #ffffff !important;
             color: #004C98 !important;
@@ -41,14 +42,9 @@ st.markdown("""
             background-color: #004C98 !important;
             color: white !important;
             border: none;
-            border-radius: 0 4px 4px 0;
+            border-radius: 4px !important;
         }
 
-        .stNumberInput button:hover {
-            background-color: #003B7A !important;
-        }
-
-        /* Botão personalizado via HTML */
         .custom-button {
             background-color: #004C98;
             color: white;
@@ -56,7 +52,6 @@ st.markdown("""
             border-radius: 6px;
             padding: 0.6rem 1.2rem;
             border: none;
-            text-align: center;
             cursor: pointer;
         }
 
@@ -64,7 +59,6 @@ st.markdown("""
             background-color: #003B7A;
         }
 
-        /* Sidebar */
         section[data-testid="stSidebar"] {
             background-color: #ffffff !important;
             color: #004C98 !important;
@@ -77,19 +71,15 @@ st.markdown("""
             color: #004C98 !important;
         }
 
+        button[kind="primary"] {
+            background-color: #004C98 !important;
+            color: white !important;
+            font-weight: bold;
+        }
+
         .stPassword svg {
             color: #004C98 !important;
             fill: #004C98 !important;
-        }
-
-        /* Correção dos textos de radio na sidebar */
-        .stRadio > div > label {
-            color: #004C98 !important;
-            font-weight: 600;
-        }
-
-        .stRadio div[role="radiogroup"] > label {
-            color: #004C98 !important;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -116,7 +106,8 @@ def check_login():
             if not usuario_encontrado.empty:
                 st.session_state["logado"] = True
                 st.session_state["usuario"] = usuario
-                st.session_state["perfil"] = usuario_encontrado.iloc[0]['perfil']
+                st.session_state["perfil"] = usuario_encontrado.iloc[0]["perfil"]
+                st.session_state["despesa"] = usuario_encontrado.iloc[0].get("despesa", "")
             else:
                 st.error("Usuário ou senha inválidos.")
 
@@ -131,9 +122,15 @@ def formulario_despesas():
     st.subheader("💰 Despesas")
 
     valores = {}
-    for despesa in df_despesas.iloc[:, 0]:
-        valor = st.number_input(f"{despesa} (R$)", min_value=0.0, format="%.2f")
-        valores[despesa] = valor
+
+    if st.session_state["perfil"] == "especifico":
+        campo = st.session_state["despesa"]
+        valor = st.number_input(f"{campo} (R$)", min_value=0.0, format="%.2f")
+        valores[campo] = valor
+    else:
+        for despesa in df_despesas.iloc[:, 0]:
+            valor = st.number_input(f"{despesa} (R$)", min_value=0.0, format="%.2f")
+            valores[despesa] = valor
 
     if st.button("Salvar Dados"):
         dados = {
@@ -170,11 +167,17 @@ else:
     st.sidebar.markdown(f"👤 Usuário: `{st.session_state['usuario']}`")
     st.sidebar.markdown(f"🔐 Perfil: `{perfil}`")
 
+    aba = "Formulário"
     if perfil in ["admin", "dashboard"]:
         aba = st.sidebar.radio("Menu", ["Formulário", "Dashboard"])
-        if aba == "Formulário":
-            formulario_despesas()
-        else:
-            dashboard()
-    else:
+    elif perfil == "especifico":
+        aba = "Formulário"
+
+    if st.sidebar.button("🚪 Sair"):
+        st.session_state.clear()
+        st.experimental_rerun()
+
+    if aba == "Formulário":
         formulario_despesas()
+    else:
+        dashboard()
