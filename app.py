@@ -5,7 +5,7 @@ import os
 
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="centered")
 
-# Estilo customizado (branco + azul institucional)
+# Estilo customizado (branco + azul institucional + inputs claros)
 st.markdown("""
     <style>
         body {
@@ -14,8 +14,16 @@ st.markdown("""
         .stApp {
             background-color: #ffffff;
         }
-        .css-1d391kg {
-            color: #004C98;
+        .css-1d391kg, .css-hxt7ib {
+            color: #004C98 !important;
+        }
+        input, select, textarea {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+        }
+        .stTextInput > div > div > input {
+            background-color: white !important;
+            color: black !important;
         }
     </style>
 """, unsafe_allow_html=True)
