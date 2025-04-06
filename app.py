@@ -76,18 +76,18 @@ def formulario_despesas():
         "Gerencia": "all",
         "Coordenadores": [
             "Embasa", "Coelba", "Aluguel", "Internet",
-            "Manutenção preventiva equipamentos médicos",
-            "Monitoramento eletrônico (segurança)", "Sistema administrativo",
-            "Medicamentos", "Material médico/hospitalar"
+            "Manutencao preventiva equipamentos medicos",
+            "Monitoramento eletronico (seguranca)", "Sistema administrativo",
+            "Medicamentos", "Material medico/hospitalar"
         ],
         "Odonto": [
-            "Material odontológico", "Manutenção preventiva equipamentos odontológicos"
+            "Material odontologico", "Manutencao preventiva equipamentos odontologicos"
         ],
-        "Manutencao I": ["Produtos alimentícios", "Material de Limpeza"],
+        "Manutencao I": ["Produtos alimenticios", "Material de Limpeza"],
         "Transporte": ["Transporte"],
-        "Manutencao II": ["Manutenção Predial", "Ar Condicionado"],
+        "Manutencao II": ["Manutencao Predial", "Ar Condicionado"],
         "RH": ["Folha de Pagamento"],
-        "Manutencao III": ["Manutenção de Informática"]
+        "Manutencao III": ["Manutencao de Informatica"]
     }
 
     if perfil in permissoes_despesas:
