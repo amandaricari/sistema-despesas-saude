@@ -1,4 +1,10 @@
 usuario,senha,perfil,despesa
-admin,$2b$12$4fStrJxjlPbF39SFye1rue7hohhC8h1d2GvSTFIer0cXtV.eYlDuS,admin,
-aluguel01,$2b$12$CZ1UB0XIv.scKlDPsSzdcOyPsmec/Tooy5loqgJfFjTV5K4W6fp.q,especifico,Aluguel
-internet01,$2b$12$0lEliJQ2xBdTMG9I1NqzIOKfAIuhS5TP0FTckpCN4TNE8a2JTvjKy,especifico,Internet
+admin,$2b$12$g16ZvlKVYrsuPGJihXaA.OcXA0zCq3fe9kDWAIqydMeIeSpOafTkO,admin,
+gerencia01,$2b$12$DhUVKqYZMktWWe49E4xct.ksuCPYnvR/7KPCdNjIiqX5yhG5lInbe,gerencia,
+coord01,$2b$12$39xBPkdHxpN8N8Ce.0CmCetPFHTmNYQyzJ/7CgSLAOK1gaKpPDE/u,coordenadores,
+odonto01,$2b$12$1Dtaz4gVABZx/6daV5NhNe495A3aN767GeAxe/Ce6J13Z7yX6sgsm,odonto,
+almox01,$2b$12$h7u3yyd5SkIG6sLRxjIRUeuBe6keV4vsIQQfpcdbgY/HVM3oitkXG,al,
+transp01,$2b$12$1ac6KK7s6ob9rdAcm1N/6ex8i6ENS0DLCWi9H5k4WPBQnp3k9HLj.,transporte,
+mp01,$2b$12$VfR6GVeqSdn0YvTyQ6HrYeGxxrZfslWyzXPjPg5QybpOaUBDrSMhm,mp,
+rh01,$2b$12$UZenkm9k973hChsEvQszZOfhDVBMc7rTVQBQenGCeOVLDs39IC1FC,rh,
+mi01,$2b$12$ihASmySUsxyeTvEVKH9c6OpCf7y2n3Oy77obIbWRXO/xZeVunKqw2,mi,
