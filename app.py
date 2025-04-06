@@ -5,36 +5,49 @@ import os
 
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="centered")
 
-# Estilo com rótulos (labels) do login corrigidos
+# Estilo visual com tema claro forçado e botões/ícones personalizados
 st.markdown("""
     <style>
-        body {
-            background-color: #ffffff;
-        }
-        .stApp {
+        body, .stApp {
             background-color: #ffffff;
             color: #004C98;
         }
+
+        label, .css-1cpxqw2, .css-1c7y2kd, .css-1bzt6gz, .css-1v0mbdj {
+            color: #004C98 !important;
+            font-weight: 500 !important;
+        }
+
         input, select, textarea {
             background-color: #ffffff !important;
             color: #000000 !important;
             border: 1px solid #cccccc !important;
         }
+
         .stTextInput > div > div > input {
             background-color: white !important;
             color: black !important;
         }
+
         button[kind="primary"] {
             background-color: #004C98 !important;
-            color: white !important;
+            color: #ffffff !important;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
         }
-        label, .css-1cpxqw2, .css-1c7y2kd, .css-1bzt6gz, .css-1v0mbdj {
+
+        .stPassword > div > div > input {
+            background-color: white !important;
+            color: black !important;
+        }
+
+        .stPassword svg {
             color: #004C98 !important;
-            font-weight: 500 !important;
         }
-        .css-1c7y2kd {
-            margin-bottom: 6px;
-            display: block;
+
+        header, footer, .css-18ni7ap {
+            visibility: hidden;
         }
     </style>
 """, unsafe_allow_html=True)
