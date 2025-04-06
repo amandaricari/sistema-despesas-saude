@@ -5,7 +5,7 @@ import os
 
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="centered")
 
-# Estilo visual completo (azul e branco institucional)
+# Estilo visual aprimorado (botões, sidebar, selects, etc.)
 st.markdown("""
     <style>
         body, .stApp {
@@ -17,8 +17,8 @@ st.markdown("""
             visibility: hidden;
         }
 
-        /* Labels */
-        label, .css-1c7y2kd, .css-1bzt6gz, .css-1v0mbdj {
+        /* Labels e textos */
+        label, .css-1c7y2kd, .css-1bzt6gz, .css-1v0mbdj, .css-qbe2hs, .css-1wvake5, .css-16idsys {
             color: #004C98 !important;
             font-weight: 500 !important;
         }
@@ -41,29 +41,27 @@ st.markdown("""
             background-color: #004C98 !important;
             color: white !important;
             border: none;
+            border-radius: 0 4px 4px 0;
         }
 
         .stNumberInput button:hover {
             background-color: #003B7A !important;
         }
 
-        .stSelectbox > div > div {
-            background-color: #ffffff !important;
-            color: #004C98 !important;
-            border: 1px solid #004C98 !important;
-        }
-
-        /* Botões */
-        button[kind="primary"] {
-            background-color: #004C98 !important;
-            color: white !important;
+        /* Botão personalizado via HTML */
+        .custom-button {
+            background-color: #004C98;
+            color: white;
             font-weight: bold;
             border-radius: 6px;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            text-align: center;
+            cursor: pointer;
         }
 
-        button[kind="primary"]:hover {
-            background-color: #003B7A !important;
+        .custom-button:hover {
+            background-color: #003B7A;
         }
 
         /* Sidebar */
@@ -74,13 +72,24 @@ st.markdown("""
         }
 
         section[data-testid="stSidebar"] .css-1d391kg,
-        section[data-testid="stSidebar"] .css-hxt7ib {
+        section[data-testid="stSidebar"] .css-hxt7ib,
+        .css-1v0mbdj {
             color: #004C98 !important;
         }
 
         .stPassword svg {
             color: #004C98 !important;
             fill: #004C98 !important;
+        }
+
+        /* Correção dos textos de radio na sidebar */
+        .stRadio > div > label {
+            color: #004C98 !important;
+            font-weight: 600;
+        }
+
+        .stRadio div[role="radiogroup"] > label {
+            color: #004C98 !important;
         }
     </style>
 """, unsafe_allow_html=True)
