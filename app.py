@@ -9,7 +9,8 @@ st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="centered")
 st.markdown("""
     <style>
         body, .stApp {
-            background-color: #ffffff;
+            background-color: #ffffff !important;
+    forced-color-adjust: none !important;
             color: #004C98;
         }
 
