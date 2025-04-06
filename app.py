@@ -3,14 +3,34 @@ import streamlit as st
 import pandas as pd
 import os
 
-# ---- LOGIN SIMPLES ----
+st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="centered")
+
+# Estilo customizado (branco + azul institucional)
+st.markdown("""
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .stApp {
+            background-color: #ffffff;
+        }
+        .css-1d391kg {
+            color: #004C98;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# Logo
+st.image("logo-2025.png", width=300)
+
+# ---- LOGIN ----
 def check_login():
-    usuarios = {
-        "admin": "123456",
-        "ubs1": "ubs123",
-        "ubs2": "ubs456"
-    }
-    
+    try:
+        df_usuarios = pd.read_csv("usuarios.csv")
+    except:
+        st.error("Arquivo de usuários não encontrado.")
+        return
+
     with st.form("login_form"):
         st.write("🔐 Login")
         usuario = st.text_input("Usuário")
@@ -18,24 +38,24 @@ def check_login():
         submit = st.form_submit_button("Entrar")
 
         if submit:
-            if usuario in usuarios and senha == usuarios[usuario]:
+            usuario_encontrado = df_usuarios[(df_usuarios['usuario'] == usuario) & (df_usuarios['senha'] == senha)]
+            if not usuario_encontrado.empty:
                 st.session_state["logado"] = True
                 st.session_state["usuario"] = usuario
+                st.session_state["perfil"] = usuario_encontrado.iloc[0]['perfil']
             else:
                 st.error("Usuário ou senha inválidos.")
 
-# ---- APP PRINCIPAL ----
-def main():
-    # Carrega arquivos
+# ---- FORMULÁRIO ----
+def formulario_despesas():
     df_unidades = pd.read_csv("ESTABELECIMENTO DE SAUDE.csv", encoding="latin1")
     df_despesas = pd.read_csv("DESPESA.csv", encoding="latin1")
 
     st.title("📋 Formulário de Despesas - Saúde Municipal")
-
     unidade = st.selectbox("Unidade de Saúde:", df_unidades.iloc[:, 0].tolist())
     competencia = st.text_input("Competência (MM/AAAA):")
-
     st.subheader("💰 Despesas")
+
     valores = {}
     for despesa in df_despesas.iloc[:, 0]:
         valor = st.number_input(f"{despesa} (R$)", min_value=0.0, format="%.2f")
@@ -60,6 +80,11 @@ def main():
         df_total.to_excel(arquivo_saida, index=False)
         st.success("✅ Dados salvos com sucesso!")
 
+# ---- DASHBOARD ----
+def dashboard():
+    st.title("📊 Dashboard de Despesas")
+    st.info("Área de visualização exclusiva para usuários autorizados.")
+
 # ---- EXECUÇÃO ----
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
@@ -67,4 +92,15 @@ if "logado" not in st.session_state:
 if not st.session_state["logado"]:
     check_login()
 else:
-    main()
+    perfil = st.session_state.get("perfil", "preenchimento")
+    st.sidebar.markdown(f"👤 Usuário: `{st.session_state['usuario']}`")
+    st.sidebar.markdown(f"🔐 Perfil: `{perfil}`")
+
+    if perfil in ["admin", "dashboard"]:
+        aba = st.sidebar.radio("Menu", ["Formulário", "Dashboard"])
+        if aba == "Formulário":
+            formulario_despesas()
+        else:
+            dashboard()
+    else:
+        formulario_despesas()
