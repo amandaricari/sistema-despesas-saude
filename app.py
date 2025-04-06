@@ -5,7 +5,7 @@ import os
 
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="centered")
 
-# Estilo completo (botão azul, ícone de senha azul, barra superior escondida)
+# Estilo visual completo (azul e branco institucional)
 st.markdown("""
     <style>
         body, .stApp {
@@ -13,38 +13,74 @@ st.markdown("""
             color: #004C98;
         }
 
-        label, .css-1cpxqw2, .css-1c7y2kd, .css-1bzt6gz, .css-1v0mbdj {
+        header, footer, .css-18ni7ap {
+            visibility: hidden;
+        }
+
+        /* Labels */
+        label, .css-1c7y2kd, .css-1bzt6gz, .css-1v0mbdj {
             color: #004C98 !important;
             font-weight: 500 !important;
         }
 
+        /* Inputs */
         input, select, textarea {
             background-color: #ffffff !important;
-            color: #000000 !important;
-            border: 1px solid #cccccc !important;
+            color: #004C98 !important;
+            border: 1px solid #004C98 !important;
         }
 
         .stTextInput > div > div > input,
-        .stPassword > div > div > input {
-            background-color: white !important;
-            color: black !important;
+        .stNumberInput input {
+            background-color: #ffffff !important;
+            color: #004C98 !important;
+            border: 1px solid #004C98 !important;
+        }
+
+        .stNumberInput button {
+            background-color: #004C98 !important;
+            color: white !important;
+            border: none;
+        }
+
+        .stNumberInput button:hover {
+            background-color: #003B7A !important;
+        }
+
+        .stSelectbox > div > div {
+            background-color: #ffffff !important;
+            color: #004C98 !important;
+            border: 1px solid #004C98 !important;
+        }
+
+        /* Botões */
+        button[kind="primary"] {
+            background-color: #004C98 !important;
+            color: white !important;
+            font-weight: bold;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+        }
+
+        button[kind="primary"]:hover {
+            background-color: #003B7A !important;
+        }
+
+        /* Sidebar */
+        section[data-testid="stSidebar"] {
+            background-color: #ffffff !important;
+            color: #004C98 !important;
+            border-right: 2px solid #004C98;
+        }
+
+        section[data-testid="stSidebar"] .css-1d391kg,
+        section[data-testid="stSidebar"] .css-hxt7ib {
+            color: #004C98 !important;
         }
 
         .stPassword svg {
             color: #004C98 !important;
             fill: #004C98 !important;
-        }
-
-        button[kind="primary"] {
-            background-color: #004C98 !important;
-            color: #ffffff !important;
-            border-radius: 6px;
-            padding: 0.5rem 1rem;
-            font-weight: bold;
-        }
-
-        header, footer, .css-18ni7ap {
-            visibility: hidden;
         }
     </style>
 """, unsafe_allow_html=True)
