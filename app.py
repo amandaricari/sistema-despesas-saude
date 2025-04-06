@@ -63,7 +63,7 @@ def formulario_despesas():
     df_unidades = pd.read_csv("ESTABELECIMENTO DE SAUDE.csv", encoding="latin1")
     df_despesas = pd.read_csv("DESPESA.csv", encoding="latin1")
 
-    st.title("📋 Formulário de Despesas - Saúde Municipal")
+    st.title("📋 Formulário de Despesas - Unidades de Saúde")
     unidade = st.selectbox("Unidade de Saúde:", df_unidades.iloc[:, 0].tolist())
     competencia = st.text_input("Competência (MM/AAAA):")
     st.subheader("💰 Despesas")
@@ -73,21 +73,21 @@ def formulario_despesas():
 
     permissoes_despesas = {
         "admin": "all",
-        "gerencia": "all",
-        "coordenadores": [
+        "Gerencia": "all",
+        "Coordenadores": [
             "Embasa", "Coelba", "Aluguel", "Internet",
             "Manutenção preventiva equipamentos médicos",
             "Monitoramento eletrônico (segurança)", "Sistema administrativo",
             "Medicamentos", "Material médico/hospitalar"
         ],
-        "odonto": [
+        "Odonto": [
             "Material odontológico", "Manutenção preventiva equipamentos odontológicos"
         ],
-        "al": ["Produtos alimentícios", "Material de Limpeza"],
-        "transporte": ["Transporte"],
-        "mp": ["Manutenção Predial", "Ar Condicionado"],
-        "rh": ["Folha de Pagamento"],
-        "mi": ["Manutenção de Informática"]
+        "Manutencao I": ["Produtos alimentícios", "Material de Limpeza"],
+        "Transporte": ["Transporte"],
+        "Manutencao II": ["Manutenção Predial", "Ar Condicionado"],
+        "RH": ["Folha de Pagamento"],
+        "Manutencao III": ["Manutenção de Informática"]
     }
 
     if perfil in permissoes_despesas:
