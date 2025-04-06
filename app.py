@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 import bcrypt
 
-st.set_page_config(page_title="Despesas Saúde", layout="wide")
+st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="wide")
 
 st.markdown("""
     <style>
@@ -59,6 +59,67 @@ def check_login():
             else:
                 st.error("Usuário não encontrado.")
 
+def formulario_despesas():
+    df_unidades = pd.read_csv("ESTABELECIMENTO DE SAUDE.csv", encoding="latin1")
+    df_despesas = pd.read_csv("DESPESA.csv", encoding="latin1")
+
+    st.title("📋 Formulário de Despesas - Saúde Municipal")
+    unidade = st.selectbox("Unidade de Saúde:", df_unidades.iloc[:, 0].tolist())
+    competencia = st.text_input("Competência (MM/AAAA):")
+    st.subheader("💰 Despesas")
+
+    perfil = st.session_state["perfil"]
+    valores = {}
+
+    permissoes_despesas = {
+        "admin": "all",
+        "gerencia": "all",
+        "coordenadores": [
+            "Embasa", "Coelba", "Aluguel", "Internet",
+            "Manutenção preventiva equipamentos médicos",
+            "Monitoramento eletrônico (segurança)", "Sistema administrativo",
+            "Medicamentos", "Material médico/hospitalar"
+        ],
+        "odonto": [
+            "Material odontológico", "Manutenção preventiva equipamentos odontológicos"
+        ],
+        "al": ["Produtos alimentícios", "Material de Limpeza"],
+        "transporte": ["Transporte"],
+        "mp": ["Manutenção Predial", "Ar Condicionado"],
+        "rh": ["Folha de Pagamento"],
+        "mi": ["Manutenção de Informática"]
+    }
+
+    if perfil in permissoes_despesas:
+        if permissoes_despesas[perfil] == "all":
+            despesas = df_despesas.iloc[:, 0].tolist()
+        else:
+            despesas = [d for d in df_despesas.iloc[:, 0] if d in permissoes_despesas[perfil]]
+    else:
+        despesas = []
+
+    for despesa in despesas:
+        valor = st.number_input(f"{despesa} (R$)", min_value=0.0, format="%.2f")
+        valores[despesa] = valor
+
+    if st.button("Salvar Dados"):
+        dados = {
+            "Unidade": unidade,
+            "Competência": competencia,
+            "Usuário": st.session_state.get("usuario", "N/A")
+        }
+        dados.update(valores)
+        df_novo = pd.DataFrame([dados])
+        arquivo_saida = "dados_despesas.xlsx"
+        if os.path.exists(arquivo_saida):
+            df_existente = pd.read_excel(arquivo_saida)
+            df_total = pd.concat([df_existente, df_novo], ignore_index=True)
+        else:
+            df_total = df_novo
+        df_total.to_excel(arquivo_saida, index=False)
+        st.success("✅ Dados salvos com sucesso!")
+        registrar_log(st.session_state["usuario"], "salvou dados")
+
 def dashboard():
     st.title("📊 Dashboard de Despesas por Unidade, Competência e Tipo")
 
@@ -105,10 +166,7 @@ def dashboard():
     ax3.set_title("Distribuição das Despesas")
     st.pyplot(fig3)
 
-def placeholder_formulario():
-    st.title("📋 Formulário (em desenvolvimento)")
-    st.info("Este formulário é acessível por outro app.")
-
+# Execução principal
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
 
@@ -120,7 +178,7 @@ else:
     st.sidebar.markdown(f"🔐 Perfil: `{perfil}`")
 
     if perfil in ["admin", "gerencia"]:
-        aba = st.sidebar.radio("Menu", ["Dashboard", "Formulário"])
+        aba = st.sidebar.radio("Menu", ["Formulário", "Dashboard"])
     else:
         aba = "Formulário"
 
@@ -129,7 +187,7 @@ else:
         st.session_state.clear()
         st.experimental_rerun()
 
-    if aba == "Dashboard":
-        dashboard()
+    if aba == "Formulário":
+        formulario_despesas()
     else:
-        placeholder_formulario()
+        dashboard()
