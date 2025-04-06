@@ -5,7 +5,7 @@ import os
 
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="centered")
 
-# Estilo customizado com login e inputs claros
+# Estilo com rótulos (labels) do login corrigidos
 st.markdown("""
     <style>
         body {
@@ -21,15 +21,20 @@ st.markdown("""
             border: 1px solid #cccccc !important;
         }
         .stTextInput > div > div > input {
-            background-color: #ffffff !important;
-            color: #000000 !important;
+            background-color: white !important;
+            color: black !important;
         }
         button[kind="primary"] {
             background-color: #004C98 !important;
             color: white !important;
         }
-        .css-1d391kg, .css-hxt7ib, .css-1v0mbdj {
+        label, .css-1cpxqw2, .css-1c7y2kd, .css-1bzt6gz, .css-1v0mbdj {
             color: #004C98 !important;
+            font-weight: 500 !important;
+        }
+        .css-1c7y2kd {
+            margin-bottom: 6px;
+            display: block;
         }
     </style>
 """, unsafe_allow_html=True)
