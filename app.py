@@ -1,48 +1,21 @@
 
 import streamlit as st
 import pandas as pd
-import bcrypt
+import matplotlib.pyplot as plt
 import os
 from datetime import datetime
+import bcrypt
 
-st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="centered")
+st.set_page_config(page_title="Despesas Saúde", layout="wide")
 
 st.markdown("""
     <style>
         html, body, .stApp {
             background-color: #ffffff !important;
             color: #004C98 !important;
-            forced-color-adjust: none !important;
-        }
-        label, .stRadio label {
-            color: #004C98 !important;
-            font-weight: 500;
-        }
-        input, select, textarea {
-            background-color: #ffffff !important;
-            color: #004C98 !important;
-            border: 1px solid #004C98 !important;
-        }
-        .stNumberInput button {
-            background-color: #004C98 !important;
-            color: white !important;
-            border-radius: 4px !important;
-        }
-        .custom-button {
-            background-color: #004C98;
-            color: white;
-            font-weight: bold;
-            border-radius: 6px;
-            padding: 0.6rem 1.2rem;
-            border: none;
-            cursor: pointer;
-        }
-        .custom-button:hover {
-            background-color: #003B7A;
         }
         section[data-testid="stSidebar"] {
             background-color: #ffffff;
-            color: #004C98;
             border-right: 2px solid #004C98;
         }
     </style>
@@ -68,7 +41,6 @@ def check_login():
 
     with st.form("login_form"):
         st.markdown("### 🔐 Login")
-        st.info("Ao acessar este sistema, você concorda com o uso de dados pessoais conforme a LGPD.")
         usuario = st.text_input("Usuário")
         senha = st.text_input("Senha", type="password")
         submit = st.form_submit_button("Entrar")
@@ -87,71 +59,55 @@ def check_login():
             else:
                 st.error("Usuário não encontrado.")
 
-def formulario_despesas():
-    df_unidades = pd.read_csv("ESTABELECIMENTO DE SAUDE.csv", encoding="latin1")
-    df_despesas = pd.read_csv("DESPESA.csv", encoding="latin1")
-
-    st.title("📋 Formulário de Despesas - Saúde Municipal")
-    unidade = st.selectbox("Unidade de Saúde:", df_unidades.iloc[:, 0].tolist())
-    competencia = st.text_input("Competência (MM/AAAA):")
-    st.subheader("💰 Despesas")
-
-    perfil = st.session_state["perfil"]
-    valores = {}
-
-    permissoes_despesas = {
-        "admin": "all",
-        "gerencia": "all",
-        "coordenadores": [
-            "Embasa", "Coelba", "Aluguel", "Internet",
-            "Manutenção preventiva equipamentos médicos",
-            "Monitoramento eletrônico (segurança)", "Sistema administrativo",
-            "Medicamentos", "Material médico/hospitalar"
-        ],
-        "odonto": [
-            "Material odontológico", "Manutenção preventiva equipamentos odontológicos"
-        ],
-        "al": ["Produtos alimentícios", "Material de Limpeza"],
-        "transporte": ["Transporte"],
-        "mp": ["Manutenção Predial", "Ar Condicionado"],
-        "rh": ["Folha de Pagamento"],
-        "mi": ["Manutenção de Informática"]
-    }
-
-    if perfil in permissoes_despesas:
-        if permissoes_despesas[perfil] == "all":
-            despesas = df_despesas.iloc[:, 0].tolist()
-        else:
-            despesas = [d for d in df_despesas.iloc[:, 0] if d in permissoes_despesas[perfil]]
-    else:
-        despesas = []
-
-    for despesa in despesas:
-        valor = st.number_input(f"{despesa} (R$)", min_value=0.0, format="%.2f")
-        valores[despesa] = valor
-
-    if st.button("Salvar Dados"):
-        dados = {
-            "Unidade": unidade,
-            "Competência": competencia,
-            "Usuário": st.session_state.get("usuario", "N/A")
-        }
-        dados.update(valores)
-        df_novo = pd.DataFrame([dados])
-        arquivo_saida = "dados_despesas.xlsx"
-        if os.path.exists(arquivo_saida):
-            df_existente = pd.read_excel(arquivo_saida)
-            df_total = pd.concat([df_existente, df_novo], ignore_index=True)
-        else:
-            df_total = df_novo
-        df_total.to_excel(arquivo_saida, index=False)
-        st.success("✅ Dados salvos com sucesso!")
-        registrar_log(st.session_state["usuario"], "salvou dados")
-
 def dashboard():
-    st.title("📊 Dashboard de Despesas")
-    st.info("Área exclusiva para usuários autorizados.")
-    registrar_log(st.session_state["usuario"], "acessou dashboard")
+    st.title("📊 Dashboard de Despesas por Unidade, Competência e Tipo")
+
+    try:
+        df = pd.read_excel("dados_despesas.xlsx")
+    except:
+        st.warning("Nenhum dado encontrado ainda.")
+        return
+
+    unidades = df["Unidade"].dropna().unique().tolist()
+    competencias = df["Competência"].dropna().unique().tolist()
+
+    unidade_sel = st.selectbox("Selecionar Unidade", ["Todas"] + unidades)
+    competencia_sel = st.selectbox("Selecionar Competência", ["Todas"] + competencias)
+
+    df_filtrado = df.copy()
+    if unidade_sel != "Todas":
+        df_filtrado = df_filtrado[df_filtrado["Unidade"] == unidade_sel]
+    if competencia_sel != "Todas":
+        df_filtrado = df_filtrado[df_filtrado["Competência"] == competencia_sel]
+
+    colunas_despesa = [col for col in df.columns if col not in ["Unidade", "Competência", "Usuário"]]
+
+    st.subheader("📌 Total por Categoria de Despesa")
+    totais = df_filtrado[colunas_despesa].sum().sort_values(ascending=False)
+    fig1, ax1 = plt.subplots()
+    totais.plot(kind="barh", ax=ax1, color="#004C98")
+    ax1.set_xlabel("Valor total (R$)")
+    st.pyplot(fig1)
+
+    st.subheader("📆 Evolução por Competência")
+    if "Competência" in df_filtrado.columns:
+        df_comp = df_filtrado.groupby("Competência")[colunas_despesa].sum()
+        fig2, ax2 = plt.subplots(figsize=(10, 5))
+        df_comp.plot(ax=ax2)
+        ax2.set_ylabel("Valor (R$)")
+        ax2.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+        st.pyplot(fig2)
+
+    st.subheader("📎 Composição Percentual")
+    fig3, ax3 = plt.subplots()
+    totais.plot(kind="pie", ax=ax3, autopct="%1.1f%%", startangle=90)
+    ax3.set_ylabel("")
+    ax3.set_title("Distribuição das Despesas")
+    st.pyplot(fig3)
+
+def placeholder_formulario():
+    st.title("📋 Formulário (em desenvolvimento)")
+    st.info("Este formulário é acessível por outro app.")
 
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
@@ -164,7 +120,7 @@ else:
     st.sidebar.markdown(f"🔐 Perfil: `{perfil}`")
 
     if perfil in ["admin", "gerencia"]:
-        aba = st.sidebar.radio("Menu", ["Formulário", "Dashboard"])
+        aba = st.sidebar.radio("Menu", ["Dashboard", "Formulário"])
     else:
         aba = "Formulário"
 
@@ -173,7 +129,7 @@ else:
         st.session_state.clear()
         st.experimental_rerun()
 
-    if aba == "Formulário":
-        formulario_despesas()
-    else:
+    if aba == "Dashboard":
         dashboard()
+    else:
+        placeholder_formulario()
