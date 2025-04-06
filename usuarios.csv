@@ -1,4 +1,4 @@
-usuario,senha,perfil
-admin,123456,admin
-ubs01,ubs123,preenchimento
-direcao,dir789,dashboard
+usuario,senha,perfil,despesa
+admin,$2b$12$4fStrJxjlPbF39SFye1rue7hohhC8h1d2GvSTFIer0cXtV.eYlDuS,admin,
+aluguel01,$2b$12$CZ1UB0XIv.scKlDPsSzdcOyPsmec/Tooy5loqgJfFjTV5K4W6fp.q,especifico,Aluguel
+internet01,$2b$12$0lEliJQ2xBdTMG9I1NqzIOKfAIuhS5TP0FTckpCN4TNE8a2JTvjKy,especifico,Internet
