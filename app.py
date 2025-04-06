@@ -5,7 +5,7 @@ import os
 
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="centered")
 
-# Estilo customizado (branco + azul institucional + inputs claros)
+# Estilo customizado com login e inputs claros
 st.markdown("""
     <style>
         body {
@@ -13,17 +13,23 @@ st.markdown("""
         }
         .stApp {
             background-color: #ffffff;
-        }
-        .css-1d391kg, .css-hxt7ib {
-            color: #004C98 !important;
+            color: #004C98;
         }
         input, select, textarea {
             background-color: #ffffff !important;
             color: #000000 !important;
+            border: 1px solid #cccccc !important;
         }
         .stTextInput > div > div > input {
-            background-color: white !important;
-            color: black !important;
+            background-color: #ffffff !important;
+            color: #000000 !important;
+        }
+        button[kind="primary"] {
+            background-color: #004C98 !important;
+            color: white !important;
+        }
+        .css-1d391kg, .css-hxt7ib, .css-1v0mbdj {
+            color: #004C98 !important;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -40,7 +46,7 @@ def check_login():
         return
 
     with st.form("login_form"):
-        st.write("🔐 Login")
+        st.markdown("### 🔐 Login")
         usuario = st.text_input("Usuário")
         senha = st.text_input("Senha", type="password")
         submit = st.form_submit_button("Entrar")
