@@ -25,17 +25,18 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 10px 10px 10px;">
-        <div>
-            <img src="logotipo-2025.png" width="240">
-        </div>
-        <div style="text-align: right;">
-            <h4 style="color: #004C98; margin: 0;">Secretaria Municipal de Saúde</h4>
-        </div>
-    </div>
-    <hr style="margin-top: 10px; border: none; border-top: 2px solid #004C98;">
-""", unsafe_allow_html=True)
+col1, col2 = st.columns([1, 2])
+
+with col1:
+    st.image("logotipo-2025.png", width=240)
+
+with col2:
+    st.markdown(
+        "<h4 style='text-align: right; color: #004C98; padding-top: 20px;'>Secretaria Municipal de Saúde</h4>",
+        unsafe_allow_html=True
+    )
+
+st.markdown("<hr style='margin-top: 10px; border: none; border-top: 2px solid #004C98;'>", unsafe_allow_html=True)
 
 def registrar_log(usuario, acao):
     agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
