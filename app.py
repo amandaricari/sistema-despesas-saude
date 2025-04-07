@@ -237,7 +237,6 @@ def dashboard():
     st.subheader("📤 Exportar Relatório")
     col1, col2 = st.columns(2)
     with col1:
-        from io import BytesIO
         excel_buffer = BytesIO()
         df_filtrado.to_excel(excel_buffer, index=False, engine="openpyxl")
         excel_buffer.seek(0)
