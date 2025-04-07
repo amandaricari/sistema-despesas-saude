@@ -28,10 +28,10 @@ st.markdown("""
 st.markdown("""
     <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 10px 10px 10px;">
         <div>
-            <img src="logo-2025.png" width="240">
+            <img src="logotipo-2025.png" width="240">
         </div>
         <div style="text-align: right;">
-            <h2 style="color: #004C98; margin: 0;">Secretaria Municipal de Saúde</h2>
+            <h4 style="color: #004C98; margin: 0;">Secretaria Municipal de Saúde</h4>
         </div>
     </div>
     <hr style="margin-top: 10px; border: none; border-top: 2px solid #004C98;">
