@@ -237,8 +237,11 @@ def dashboard():
     st.subheader("📤 Exportar Relatório")
     col1, col2 = st.columns(2)
     with col1:
-        excel = df_filtrado.to_excel(index=False, engine="openpyxl")
-        st.download_button("📥 Baixar Excel", data=excel, file_name="despesas_filtradas.xlsx")
+        from io import BytesIO
+        excel_buffer = BytesIO()
+        df_filtrado.to_excel(excel_buffer, index=False, engine="openpyxl")
+        excel_buffer.seek(0)
+        st.download_button("📥 Baixar Excel", data=excel_buffer, file_name="despesas_filtradas.xlsx")
 
     with col2:
         pdf_buffer = gerar_pdf(totais, unidade_sel, competencia_sel)
