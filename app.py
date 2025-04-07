@@ -305,7 +305,7 @@ else:
     elif aba == "Gerenciar Usuários" and perfil == "admin":
         gerenciar_usuarios()
       
-      def gerenciar_usuarios():
+def gerenciar_usuarios():
     st.title("👥 Gerenciador de Usuários")
 
     df_usuarios = pd.read_csv("usuarios.csv")
