@@ -321,5 +321,5 @@ else:
         formulario_despesas()
     elif aba == "Dashboard":
         dashboard()
-    elif aba == "Gerenciar Usuários" and perfil == "Administrador":
+    elif aba == "Gerenciar Usuários" and perfil == "administrador":
         gerenciar_usuarios()
