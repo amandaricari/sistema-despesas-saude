@@ -318,7 +318,7 @@ else:
     if st.sidebar.button("🚪 Sair"):
         registrar_log(st.session_state["usuario"], "logout")
         st.session_state.clear()
-        st.experimental_rerun()
+        st.rerun()
 
     if aba == "Formulário":
         formulario_despesas()
