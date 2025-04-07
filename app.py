@@ -281,12 +281,17 @@ def dashboard():
         st.info("Selecione dois anos diferentes para comparar.")
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
-if not st.session_state["logado"]:
+    
 def check_login():
-else:
-    st.sidebar.markdown(f"👤 Usuário: `{st.session_state['usuario']}`")
-    st.sidebar.markdown(f"🔐 Perfil: `{st.session_state['perfil']}`")
+    st.error("Você precisa estar logado para continuar.")
+    st.stop()
 
+if not st.session_state["logado"]:
+    check_login()
+else:
+    st.sidebar.markdown(f"🧍‍♂️ Usuário: `{st.session_state['usuario']}`")
+    st.sidebar.markdown(f"🔐 Perfil: `{st.session_state['perfil']}`")
+    
     perfil = st.session_state["perfil"]
     if perfil in ["admin", "gerencia"]:
         aba = st.sidebar.radio("Menu", ["Formulário", "Dashboard", "Gerenciar Usuários"])
