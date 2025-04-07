@@ -309,7 +309,7 @@ else:
     st.sidebar.markdown(f"🧍‍♂️ Usuário: `{st.session_state['usuario']}`")
     st.sidebar.markdown(f"🔐 Perfil: `{st.session_state['perfil']}`")
    
-perfil = st.session_state["perfil"]
+perfil = st.session_state.get("perfil", "")
 if perfil == "Administrador":
     abas = ["Formulário", "Dashboard", "Gerenciar Usuários"]
 elif perfil == "Gerencia":
