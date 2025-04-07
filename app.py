@@ -324,9 +324,9 @@ if st.sidebar.button("🚪 Sair"):
         st.session_state.clear()
         st.rerun()
 
-    if aba == "Formulário":
+if aba == "Formulário":
         formulario_despesas()
-    elif aba == "Dashboard":
+elif aba == "Dashboard":
         dashboard()
-    elif aba == "Gerenciar Usuários" and perfil == "administrador":
+elif aba == "Gerenciar Usuários" and perfil == "administrador":
         gerenciar_usuarios()
