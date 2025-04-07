@@ -318,14 +318,14 @@ else:
     abas = ["Formulário"]
 aba = st.sidebar.radio("Menu", abas)
 
-if st.sidebar.button("🚪 Sair"):
+    if st.sidebar.button("🚪 Sair"):
     registrar_log(st.session_state["usuario"], "logout")
     st.session_state.clear()
     st.rerun()
 
-if aba == "Formulário":
+    if aba == "Formulário":
     formulario_despesas()
-elif aba == "Dashboard":
+    elif aba == "Dashboard":
     dashboard()
-elif aba == "Gerenciar Usuários" and perfil == "Administrador":
+    elif aba == "Gerenciar Usuários" and perfil == "Administrador":
     gerenciar_usuarios()
