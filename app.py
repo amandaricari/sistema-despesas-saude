@@ -101,7 +101,7 @@ def formulario_despesas():
     df_unidades = pd.read_csv("ESTABELECIMENTO DE SAUDE.csv", encoding="latin1")
     df_despesas = pd.read_csv("DESPESA.csv", encoding="latin1")
 
-    st.title("📋 Formulário de Despesas - Saúde Municipal")
+    st.title("📋 Formulário de Despesas - Unidades de Saúde")
     unidade = st.selectbox("Unidade de Saúde:", df_unidades.iloc[:, 0].tolist())
     competencia = st.text_input("Competência (MM/AAAA):")
     st.subheader("💰 Despesas")
