@@ -103,7 +103,10 @@ def formulario_despesas():
 
     st.title("📋 Formulário de Despesas - Unidades de Saúde")
     unidade = st.selectbox("Unidade de Saúde:", df_unidades.iloc[:, 0].tolist())
-    competencia = st.text_input("Competência (MM/AAAA):")
+    from datetime import datetime
+    meses = [f"{str(m).zfill(2)}/{a}" for a in range(2023, datetime.now().year + 2) for m in range(1, 13)]
+    meses_ordenados = sorted(meses, key=lambda x: datetime.strptime(x, "%m/%Y"), reverse=True)
+    competencia = st.selectbox("Competência (MM/AAAA):", meses_ordenados)
     st.subheader("💰 Despesas")
 
     perfil = st.session_state.get("perfil", "")
