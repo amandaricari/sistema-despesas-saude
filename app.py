@@ -110,22 +110,22 @@ def formulario_despesas():
     valores = {}
 
     permissoes_despesas = {
-        "Administrador": "all",
-        "Gerencia": "all",
-        "Coordenadores": [
+        "administrador": "all",
+        "gerencia": "all",
+        "coordenadores": [
             "Embasa", "Coelba", "Aluguel", "Internet",
             "Manutencao preventiva equipamentos medicos",
             "Monitoramento eletronico (seguranca)", "Sistema administrativo",
             "Medicamentos", "Material medico/hospitalar"
         ],
-        "Odonto": [
+        "odonto": [
             "Material odontologico", "Manutencao preventiva equipamentos odontologicos"
         ],
-        "Manutenção I": ["Produtos alimenticios", "Material de Limpeza"],
-        "Transporte": ["Transporte"],
-        "Manutenção II": ["Manutencao Predial", "Ar Condicionado"],
-        "RH": ["Folha de Pagamento"],
-        "Manutenção III": ["Manutencao de Informatica"]
+        "manutenção I": ["Produtos alimenticios", "Material de Limpeza"],
+        "transporte": ["Transporte"],
+        "manutenção II": ["Manutencao Predial", "Ar Condicionado"],
+        "rh": ["Folha de Pagamento"],
+        "manutenção III": ["Manutencao de Informatica"]
     }
 
     if perfil in permissoes_despesas:
@@ -303,14 +303,14 @@ if not st.session_state["logado"]:
     if st.button("Entrar"):
         st.session_state["logado"] = True
         st.session_state["usuario"] = usuario
-        st.session_state["perfil"] = "admin"
+        st.session_state["perfil"] = "administrador"
         st.rerun()
 else:
     st.sidebar.markdown(f"🧍‍♂️ Usuário: `{st.session_state['usuario']}`")
     st.sidebar.markdown(f"🔐 Perfil: `{st.session_state['perfil']}`")
    
     perfil = st.session_state["perfil"]
-    if perfil in ["admin", "gerencia"]:
+    if perfil in ["administrador", "gerencia"]:
         aba = st.sidebar.radio("Menu", ["Formulário", "Dashboard", "Gerenciar Usuários"])
     else:
         aba = "Formulário"
@@ -324,5 +324,5 @@ else:
         formulario_despesas()
     elif aba == "Dashboard":
         dashboard()
-    elif aba == "Gerenciar Usuários" and perfil == "admin":
+    elif aba == "Gerenciar Usuários" and perfil == "administrador":
         gerenciar_usuarios()
