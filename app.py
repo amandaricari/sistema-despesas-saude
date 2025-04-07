@@ -316,17 +316,16 @@ elif perfil == "Gerencia":
     abas = ["Formulário", "Dashboard"]
 else:
     abas = ["Formulário"]
-
 aba = st.sidebar.radio("Menu", abas)
 
 if st.sidebar.button("🚪 Sair"):
-        registrar_log(st.session_state["usuario"], "logout")
-        st.session_state.clear()
-        st.rerun()
+    registrar_log(st.session_state["usuario"], "logout")
+    st.session_state.clear()
+    st.rerun()
 
 if aba == "Formulário":
-        formulario_despesas()
+    formulario_despesas()
 elif aba == "Dashboard":
-        dashboard()
-elif aba == "Gerenciar Usuários" and perfil == "administrador":
-        gerenciar_usuarios()
+    dashboard()
+elif aba == "Gerenciar Usuários" and perfil == "Administrador":
+    gerenciar_usuarios()
