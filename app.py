@@ -28,7 +28,7 @@ st.markdown("""
 st.markdown("""
     <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 10px 10px 10px;">
         <div>
-            <img src="logotipo-2025.png" width="300">
+            <img src="logo-2025.png" width="240">
         </div>
         <div style="text-align: right;">
             <h2 style="color: #004C98; margin: 0;">Secretaria Municipal de Saúde</h2>
