@@ -170,7 +170,7 @@ def gerenciar_usuarios():
     with st.form("form_add_user"):
         novo_usuario = st.text_input("Novo Usuário")
         nova_senha = st.text_input("Senha", type="password")
-        novo_perfil = st.selectbox("Perfil", ["Administrador", "Gerencia", "Coordenadores", "Odonto", "Manutenção I", "Transporte", "Manutenção II", "RH", "Manutenção III"])
+        novo_perfil = st.selectbox("Perfil", ["administrador", "gerencia", "coordenadores", "odonto", "manutenção I", "transporte", "manutenção II", "rh", "manutenção III"])
         submit_add = st.form_submit_button("Cadastrar")
         if submit_add:
             hash_senha = bcrypt.hashpw(nova_senha.encode(), bcrypt.gensalt()).decode()
