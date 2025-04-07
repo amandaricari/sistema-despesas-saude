@@ -279,19 +279,25 @@ def dashboard():
         st.pyplot(fig5)
     else:
         st.info("Selecione dois anos diferentes para comparar.")
+        
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
-    
-def check_login():
-    st.error("Você precisa estar logado para continuar.")
-    st.stop()
+if "logado" not in st.session_state:
+    st.session_state["logado"] = False
 
 if not st.session_state["logado"]:
-    check_login()
+    st.subheader("🔐 Login")
+    usuario = st.text_input("Usuário")
+    senha = st.text_input("Senha", type="password")
+    if st.button("Entrar"):
+        st.session_state["logado"] = True
+        st.session_state["usuario"] = usuario
+        st.session_state["perfil"] = "admin"  # Exemplo
+        st.rerun()
 else:
     st.sidebar.markdown(f"🧍‍♂️ Usuário: `{st.session_state['usuario']}`")
     st.sidebar.markdown(f"🔐 Perfil: `{st.session_state['perfil']}`")
-    
+   
     perfil = st.session_state["perfil"]
     if perfil in ["admin", "gerencia"]:
         aba = st.sidebar.radio("Menu", ["Formulário", "Dashboard", "Gerenciar Usuários"])
