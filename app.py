@@ -25,7 +25,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.image("logo-2025.png", width=300)
+st.markdown("""
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <img src="logo-2025.png" alt="Prefeitura de Barreiras" width="300">
+        <h3 style="color: #004C98; margin: 0; padding-right: 10px;">Secretaria Municipal de Saúde</h3>
+    </div>
+    <hr style="margin-top:10px;">
+""", unsafe_allow_html=True)
 
 def registrar_log(usuario, acao):
     agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
