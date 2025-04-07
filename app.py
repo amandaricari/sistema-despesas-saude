@@ -302,9 +302,9 @@ else:
 
     perfil = st.session_state.get("perfil", "")
 
-    if perfil == "Administrador":
+    if perfil == "administrador":
         abas = ["Formulário", "Dashboard", "Gerenciar Usuários"]
-    elif perfil == "Gerencia":
+    elif perfil == "gerencia":
         abas = ["Formulário", "Dashboard"]
     else:
         abas = ["Formulário"]
