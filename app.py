@@ -309,11 +309,15 @@ else:
     st.sidebar.markdown(f"🧍‍♂️ Usuário: `{st.session_state['usuario']}`")
     st.sidebar.markdown(f"🔐 Perfil: `{st.session_state['perfil']}`")
    
-    perfil = st.session_state["perfil"]
-    if perfil in ["administrador", "gerencia"]:
-        aba = st.sidebar.radio("Menu", ["Formulário", "Dashboard", "Gerenciar Usuários"])
-    else:
-        aba = "Formulário"
+perfil = st.session_state["perfil"]
+if perfil == "Administrador":
+    abas = ["Formulário", "Dashboard", "Gerenciar Usuários"]
+elif perfil == "Gerencia":
+    abas = ["Formulário", "Dashboard"]
+else:
+    abas = ["Formulário"]
+
+aba = st.sidebar.radio("Menu", abas)
 
     if st.sidebar.button("🚪 Sair"):
         registrar_log(st.session_state["usuario"], "logout")
