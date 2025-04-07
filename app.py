@@ -228,10 +228,22 @@ def dashboard():
         st.pyplot(fig2)
 
     st.subheader("📎 Composição Percentual")
-    fig3, ax3 = plt.subplots()
-    totais.plot(kind="pie", ax=ax3, autopct="%1.1f%%", startangle=90)
+    fig3, ax3 = plt.subplots(figsize=(8, 6))
+    totais.plot(
+    kind="pie", 
+    ax=ax3, 
+    startangle=90, 
+    labels=None,
+    autopct="%1.1f%%"
+    )
     ax3.set_ylabel("")
     ax3.set_title("Distribuição das Despesas")
+    ax3.legend(
+    labels=totais.index, 
+    loc="center left", 
+    bbox_to_anchor=(1.0, 0.5), 
+    title="Categorias"
+    )
     st.pyplot(fig3)
 
     st.subheader("📤 Exportar Relatório")
