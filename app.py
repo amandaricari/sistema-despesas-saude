@@ -121,11 +121,11 @@ def formulario_despesas():
         "odonto": [
             "Material odontologico", "Manutencao preventiva equipamentos odontologicos"
         ],
-        "manutenção I": ["Produtos alimenticios", "Material de Limpeza"],
+        "manutencao I": ["Produtos alimenticios", "Material de Limpeza"],
         "transporte": ["Transporte"],
-        "manutenção II": ["Manutencao Predial", "Ar Condicionado"],
+        "manutencao II": ["Manutencao Predial", "Ar Condicionado"],
         "rh": ["Folha de Pagamento"],
-        "manutenção III": ["Manutencao de Informatica"]
+        "manutencao III": ["Manutencao de Informatica"]
     }
 
     if perfil in permissoes_despesas:
