@@ -58,7 +58,7 @@ def check_login():
                     st.session_state["usuario"] = usuario
                     st.session_state["perfil"] = user.iloc[0]["perfil"]
                     registrar_log(usuario, "login")
-                    st.experimental_rerun()
+                    st.rerun()
                 else:
                     st.error("Senha incorreta.")
             else:
@@ -282,7 +282,7 @@ def dashboard():
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
 if not st.session_state["logado"]:
-    check_login()
+def check_login():
 else:
     st.sidebar.markdown(f"👤 Usuário: `{st.session_state['usuario']}`")
     st.sidebar.markdown(f"🔐 Perfil: `{st.session_state['perfil']}`")
