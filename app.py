@@ -293,40 +293,33 @@ def dashboard():
         
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
-if "logado" not in st.session_state:
-    st.session_state["logado"] = False
 
 if not st.session_state["logado"]:
-    st.subheader("🔐 Login")
-    usuario = st.text_input("Usuário")
-    senha = st.text_input("Senha", type="password")
-    if st.button("Entrar"):
-        st.session_state["logado"] = True
-        st.session_state["usuario"] = usuario
-        st.session_state["perfil"] = "administrador"
-        st.rerun()
+    check_login()
 else:
     st.sidebar.markdown(f"🧍‍♂️ Usuário: `{st.session_state['usuario']}`")
     st.sidebar.markdown(f"🔐 Perfil: `{st.session_state['perfil']}`")
-   
-perfil = st.session_state.get("perfil", "")
-if perfil == "Administrador":
-    abas = ["Formulário", "Dashboard", "Gerenciar Usuários"]
-elif perfil == "Gerencia":
-    abas = ["Formulário", "Dashboard"]
-else:
-    abas = ["Formulário"]
+
+    perfil = st.session_state.get("perfil", "")
+
+    if perfil == "Administrador":
+        abas = ["Formulário", "Dashboard", "Gerenciar Usuários"]
+    elif perfil == "Gerencia":
+        abas = ["Formulário", "Dashboard"]
+    else:
+        abas = ["Formulário"]
 
     aba = st.sidebar.radio("Menu", abas)
 
     if st.sidebar.button("🚪 Sair"):
-        registrar_log(st.session_state["usuario"], "logout")
+        usuario = st.session_state.get("usuario", "desconhecido")
+        registrar_log(usuario, "logout")
         st.session_state.clear()
-        st.experimental_rerun()
+        st.rerun()
 
     if aba == "Formulário":
         formulario_despesas()
     elif aba == "Dashboard":
         dashboard()
-    elif aba == "Gerenciar Usuários" and perfil == "admin":
+    elif aba == "Gerenciar Usuários" and perfil == "Administrador":
         gerenciar_usuarios()
