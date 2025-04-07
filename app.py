@@ -319,7 +319,7 @@ else:
 
 aba = st.sidebar.radio("Menu", abas)
 
-    if st.sidebar.button("🚪 Sair"):
+if st.sidebar.button("🚪 Sair"):
         registrar_log(st.session_state["usuario"], "logout")
         st.session_state.clear()
         st.rerun()
