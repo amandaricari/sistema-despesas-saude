@@ -1,5 +1,5 @@
 usuario,senha,perfil,despesa
-admin,$2b$12$g16ZvlKVYrsuPGJihXaA.OcXA0zCq3fe9kDWAIqydMeIeSpOafTkO,admin,
+admin,$2b$12$g16ZvlKVYrsuPGJihXaA.OcXA0zCq3fe9kDWAIqydMeIeSpOafTkO,Administrador,
 gerencia01,$2b$12$DhUVKqYZMktWWe49E4xct.ksuCPYnvR/7KPCdNjIiqX5yhG5lInbe,Gerencia,
 coord01,$2b$12$39xBPkdHxpN8N8Ce.0CmCetPFHTmNYQyzJ/7CgSLAOK1gaKpPDE/u,Coordenadores,
 odonto01,$2b$12$1Dtaz4gVABZx/6daV5NhNe495A3aN767GeAxe/Ce6J13Z7yX6sgsm,Odonto,
