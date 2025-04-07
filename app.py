@@ -110,22 +110,22 @@ def formulario_despesas():
     valores = {}
 
     permissoes_despesas = {
-        "admin": "all",
-        "gerencia": "all",
-        "coordenadores": [
+        "Administrador": "all",
+        "Gerencia": "all",
+        "Coordenadores": [
             "Embasa", "Coelba", "Aluguel", "Internet",
-            "Manutenção preventiva equipamentos médicos",
-            "Monitoramento eletrônico (segurança)", "Sistema administrativo",
-            "Medicamentos", "Material médico/hospitalar"
+            "Manutencao preventiva equipamentos medicos",
+            "Monitoramento eletronico (seguranca)", "Sistema administrativo",
+            "Medicamentos", "Material medico/hospitalar"
         ],
-        "odonto": [
-            "Material odontológico", "Manutenção preventiva equipamentos odontológicos"
+        "Odonto": [
+            "Material odontologico", "Manutencao preventiva equipamentos odontologicos"
         ],
-        "al": ["Produtos alimentícios", "Material de Limpeza"],
-        "transporte": ["Transporte"],
-        "mp": ["Manutenção Predial", "Ar Condicionado"],
-        "rh": ["Folha de Pagamento"],
-        "mi": ["Manutenção de Informática"]
+        "Manutenção I": ["Produtos alimenticios", "Material de Limpeza"],
+        "Transporte": ["Transporte"],
+        "Manutenção II": ["Manutencao Predial", "Ar Condicionado"],
+        "RH": ["Folha de Pagamento"],
+        "Manutenção III": ["Manutencao de Informatica"]
     }
 
     if perfil in permissoes_despesas:
@@ -170,7 +170,7 @@ def gerenciar_usuarios():
     with st.form("form_add_user"):
         novo_usuario = st.text_input("Novo Usuário")
         nova_senha = st.text_input("Senha", type="password")
-        novo_perfil = st.selectbox("Perfil", ["admin", "gerencia", "coordenadores", "odonto", "al", "transporte", "mp", "rh", "mi"])
+        novo_perfil = st.selectbox("Perfil", ["Administrador", "Gerencia", "Coordenadores", "Odonto", "Manutenção I", "Transporte", "Manutenção II", "RH", "Manutenção III"])
         submit_add = st.form_submit_button("Cadastrar")
         if submit_add:
             hash_senha = bcrypt.hashpw(nova_senha.encode(), bcrypt.gensalt()).decode()
@@ -303,7 +303,7 @@ if not st.session_state["logado"]:
     if st.button("Entrar"):
         st.session_state["logado"] = True
         st.session_state["usuario"] = usuario
-        st.session_state["perfil"] = "admin"  # Exemplo
+        st.session_state["perfil"] = "admin"
         st.rerun()
 else:
     st.sidebar.markdown(f"🧍‍♂️ Usuário: `{st.session_state['usuario']}`")
@@ -326,29 +326,3 @@ else:
         dashboard()
     elif aba == "Gerenciar Usuários" and perfil == "admin":
         gerenciar_usuarios()
-      
-def gerenciar_usuarios():
-    st.title("👥 Gerenciador de Usuários")
-
-    df_usuarios = pd.read_csv("usuarios.csv")
-    st.dataframe(df_usuarios)
-
-    st.markdown("### ➕ Adicionar Novo Usuário")
-    with st.form("form_add_user"):
-        novo_usuario = st.text_input("Novo Usuário")
-        nova_senha = st.text_input("Senha", type="password")
-        novo_perfil = st.selectbox("Perfil", ["admin", "gerencia", "coordenadores", "odonto", "al", "transporte", "mp", "rh", "mi"])
-        submit_add = st.form_submit_button("Cadastrar")
-        if submit_add:
-            hash_senha = bcrypt.hashpw(nova_senha.encode(), bcrypt.gensalt()).decode()
-            novo_dado = pd.DataFrame([[novo_usuario, hash_senha, novo_perfil]], columns=["usuario", "senha", "perfil"])
-            df_usuarios = pd.concat([df_usuarios, novo_dado], ignore_index=True)
-            df_usuarios.to_csv("usuarios.csv", index=False)
-            st.success("✅ Usuário cadastrado com sucesso!")
-
-    st.markdown("### 🗑️ Excluir Usuário")
-    usuario_excluir = st.selectbox("Selecionar usuário para excluir", df_usuarios["usuario"].tolist())
-    if st.button("Excluir"):
-        df_usuarios = df_usuarios[df_usuarios["usuario"] != usuario_excluir]
-        df_usuarios.to_csv("usuarios.csv", index=False)
-        st.success(f"✅ Usuário '{usuario_excluir}' excluído com sucesso!")
