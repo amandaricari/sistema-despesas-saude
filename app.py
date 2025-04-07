@@ -26,11 +26,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <img src="logo-2025.png" alt="Prefeitura de Barreiras" width="300">
-        <h3 style="color: #004C98; margin: 0; padding-right: 10px;">Secretaria Municipal de Saúde</h3>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 10px 10px 10px;">
+        <div>
+            <img src="logo-2025.png" alt="Prefeitura de Barreiras" width="300">
+        </div>
+        <div style="text-align: right;">
+            <h2 style="color: #004C98; margin: 0;">Secretaria Municipal de Saúde</h2>
+        </div>
     </div>
-    <hr style="margin-top:10px;">
+    <hr style="margin-top: 10px; border: none; border-top: 2px solid #004C98;">
 """, unsafe_allow_html=True)
 
 def registrar_log(usuario, acao):
