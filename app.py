@@ -282,6 +282,56 @@ def dashboard():
 if "logado" not in st.session_state:
     st.session_state["logado"] = False
 
+  st.subheader("📊 Comparativo de Despesas por Ano")
+df["Ano"] = df["Competência"].str[-4:]
+anos_disponiveis = sorted(df["Ano"].dropna().unique().tolist())
+
+col1, col2 = st.columns(2)
+with col1:
+    ano1 = st.selectbox("Selecionar Ano 1", anos_disponiveis, key="ano1")
+with col2:
+    ano2 = st.selectbox("Selecionar Ano 2", anos_disponiveis, index=1 if len(anos_disponiveis) > 1 else 0, key="ano2")
+
+if ano1 != ano2:
+    df_ano1 = df[df["Ano"] == ano1]
+    df_ano2 = df[df["Ano"] == ano2]
+
+    soma1 = df_ano1[colunas_despesa].sum()
+    soma2 = df_ano2[colunas_despesa].sum()
+
+    df_comparativo = pd.DataFrame({
+        ano1: soma1,
+        ano2: soma2
+    })
+
+    st.markdown("#### 💹 Comparativo Total por Categoria")
+    fig4, ax4 = plt.subplots(figsize=(10, 5))
+    df_comparativo.plot(kind="bar", ax=ax4)
+    ax4.set_ylabel("Valor (R$)")
+    ax4.set_title("Totais por Tipo de Despesa")
+    st.pyplot(fig4)
+
+    st.markdown("#### 📈 Evolução Mensal Comparativa")
+    df["Mês"] = df["Competência"].str[:2]
+    df["Ano-Mês"] = df["Ano"] + "-" + df["Mês"]
+
+    df_mensal = df.groupby(["Ano", "Mês"])[colunas_despesa].sum().reset_index()
+    df_mensal["Ano-Mês"] = df_mensal["Ano"] + "-" + df_mensal["Mês"]
+
+    fig5, ax5 = plt.subplots(figsize=(10, 5))
+    for col in colunas_despesa:
+        dados1 = df_mensal[df_mensal["Ano"] == ano1].set_index("Ano-Mês")[col]
+        dados2 = df_mensal[df_mensal["Ano"] == ano2].set_index("Ano-Mês")[col]
+        dados1.plot(ax=ax5, label=f"{col} ({ano1})", linestyle="--")
+        dados2.plot(ax=ax5, label=f"{col} ({ano2})")
+    ax5.set_ylabel("Valor (R$)")
+    ax5.set_title("Evolução Mensal das Despesas")
+    ax5.legend(loc="upper left", bbox_to_anchor=(1, 1))
+    st.pyplot(fig5)
+else:
+    st.info("Selecione dois anos diferentes para comparar.")
+
+
 if not st.session_state["logado"]:
     check_login()
 else:
@@ -305,3 +355,29 @@ else:
         dashboard()
     elif aba == "Gerenciar Usuários" and perfil == "admin":
         gerenciar_usuarios()
+      
+      def gerenciar_usuarios():
+    st.title("👥 Gerenciador de Usuários")
+
+    df_usuarios = pd.read_csv("usuarios.csv")
+    st.dataframe(df_usuarios)
+
+    st.markdown("### ➕ Adicionar Novo Usuário")
+    with st.form("form_add_user"):
+        novo_usuario = st.text_input("Novo Usuário")
+        nova_senha = st.text_input("Senha", type="password")
+        novo_perfil = st.selectbox("Perfil", ["admin", "gerencia", "coordenadores", "odonto", "al", "transporte", "mp", "rh", "mi"])
+        submit_add = st.form_submit_button("Cadastrar")
+        if submit_add:
+            hash_senha = bcrypt.hashpw(nova_senha.encode(), bcrypt.gensalt()).decode()
+            novo_dado = pd.DataFrame([[novo_usuario, hash_senha, novo_perfil]], columns=["usuario", "senha", "perfil"])
+            df_usuarios = pd.concat([df_usuarios, novo_dado], ignore_index=True)
+            df_usuarios.to_csv("usuarios.csv", index=False)
+            st.success("✅ Usuário cadastrado com sucesso!")
+
+    st.markdown("### 🗑️ Excluir Usuário")
+    usuario_excluir = st.selectbox("Selecionar usuário para excluir", df_usuarios["usuario"].tolist())
+    if st.button("Excluir"):
+        df_usuarios = df_usuarios[df_usuarios["usuario"] != usuario_excluir]
+        df_usuarios.to_csv("usuarios.csv", index=False)
+        st.success(f"✅ Usuário '{usuario_excluir}' excluído com sucesso!")
