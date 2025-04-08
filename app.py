@@ -144,13 +144,13 @@ def formulario_despesas():
         valores[despesa] = valor
 
     if st.button("Salvar Dados"):
-    if not unidade or not competencia:
-        st.warning("Por favor, selecione a unidade e a competência.")
-        st.stop()
+        if not unidade or not competencia:
+            st.warning("Por favor, selecione a unidade e a competência.")
+            st.stop()
 
-    if not valores or all(v == 0.0 for v in valores.values()):
-        st.warning("Preencha pelo menos uma despesa antes de salvar.")
-        st.stop()
+        if not valores or all(v == 0.0 for v in valores.values()):
+            st.warning("Preencha pelo menos uma despesa antes de salvar.")
+            st.stop()
 
     dados = {
         "Unidade": unidade,
@@ -166,7 +166,7 @@ def formulario_despesas():
         df_total = pd.concat([df_existente, df_novo], ignore_index=True)
     else:
         df_total = df_novo
-
+        
     df_total.to_excel(arquivo_saida, index=False)
     st.success("✅ Dados salvos com sucesso!")
     registrar_log(st.session_state["usuario"], "salvou dados")
