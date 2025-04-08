@@ -4,3 +4,5 @@ bcrypt
 matplotlib
 openpyxl
 reportlab
+gspread
+google-auth
