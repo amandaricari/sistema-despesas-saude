@@ -143,6 +143,7 @@ def formulario_despesas():
         valor = st.number_input(f"{despesa} (R$)", min_value=0.0, format="%.2f")
         valores[despesa] = valor
 
+if st.button("Salvar Dados"):
     if not unidade or not competencia:
         st.warning("Por favor, selecione a unidade e a competência.")
         st.stop()
@@ -151,25 +152,24 @@ def formulario_despesas():
         st.warning("Preencha pelo menos uma despesa antes de salvar.")
         st.stop()
 
-    if st.button("Salvar Dados"):
-        dados = {
-            "Unidade": unidade,
-            "Competência": competencia,
-            "Usuário": st.session_state.get("usuario", "N/A")
-        }
-        dados.update(valores)
-        df_novo = pd.DataFrame([dados])
+    dados = {
+        "Unidade": unidade,
+        "Competência": competencia,
+        "Usuário": st.session_state.get("usuario", "N/A")
+    }
+    dados.update(valores)
+    df_novo = pd.DataFrame([dados])
 
-        arquivo_saida = "dados_despesas.xlsx"
-        if os.path.exists(arquivo_saida):
-            df_existente = pd.read_excel(arquivo_saida)
-            df_total = pd.concat([df_existente, df_novo], ignore_index=True)
-        else:
-            df_total = df_novo
+    arquivo_saida = "dados_despesas.xlsx"
+    if os.path.exists(arquivo_saida):
+        df_existente = pd.read_excel(arquivo_saida)
+        df_total = pd.concat([df_existente, df_novo], ignore_index=True)
+    else:
+        df_total = df_novo
 
-        df_total.to_excel(arquivo_saida, index=False)
-        st.success("✅ Dados salvos com sucesso!")
-        registrar_log(st.session_state["usuario"], "salvou dados")
+    df_total.to_excel(arquivo_saida, index=False)
+    st.success("✅ Dados salvos com sucesso!")
+    registrar_log(st.session_state["usuario"], "salvou dados")
 
 def gerenciar_usuarios():
     st.title("👥 Gerenciador de Usuários")
