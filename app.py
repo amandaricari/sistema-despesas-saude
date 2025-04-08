@@ -104,9 +104,11 @@ def formulario_despesas():
 
     st.title("📋 Formulário de Despesas - Unidades de Saúde")
     unidade = st.selectbox("Unidade de Saúde:", df_unidades.iloc[:, 0].tolist())
+
     from datetime import datetime
     meses = [f"{str(mes).zfill(2)}/{datetime.now().year}" for mes in range(1, 13)]
     competencia = st.selectbox("Competência (MM/AAAA):", meses)
+
     st.subheader("💰 Despesas")
 
     perfil = st.session_state.get("perfil", "")
@@ -143,7 +145,8 @@ def formulario_despesas():
         valor = st.number_input(f"{despesa} (R$)", min_value=0.0, format="%.2f")
         valores[despesa] = valor
 
-        if st.button("Salvar Dados"):
+    # ⚠️ Botão deve ficar fora do loop acima
+    if st.button("Salvar Dados"):
         if not unidade or not competencia:
             st.warning("Por favor, selecione a unidade e a competência.")
             st.stop()
@@ -170,10 +173,10 @@ def formulario_despesas():
 
         df_total.to_excel(arquivo_saida, index=False)
         registrar_log(st.session_state["usuario"], "salvou dados")
-
         st.session_state["dados_salvos"] = True
-        st.rerun() 
-        
+        st.rerun()
+
+    # Mensagem de sucesso pós-rerun
     if st.session_state.get("dados_salvos", False):
         st.success("✅ Dados salvos com sucesso!")
         st.session_state["dados_salvos"] = False
