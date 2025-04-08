@@ -50,7 +50,7 @@ def registrar_log(usuario, acao):
 def check_login():
     try:
         df_usuarios = pd.read_csv("usuarios.csv")
-    except:
+    except FileNotFoundError:
         st.error("Arquivo de usuários não encontrado.")
         return
 
@@ -67,13 +67,14 @@ def check_login():
                 if bcrypt.checkpw(senha.encode(), senha_hash.encode()):
                     st.session_state["logado"] = True
                     st.session_state["usuario"] = usuario
-                    st.session_state["perfil"] = user.iloc[0]["perfil"]
+                    # 🔒 Padroniza o perfil
+                    st.session_state["perfil"] = user.iloc[0]["perfil"].strip().lower()
                     registrar_log(usuario, "login")
                     st.rerun()
                 else:
-                    st.error("Senha incorreta.")
+                    st.error("🔐 Senha incorreta.")
             else:
-                st.error("Usuário não encontrado.")
+                st.error("🧑 Usuário não encontrado.")
 
 def gerar_pdf(df, unidade, competencia):
     buffer = BytesIO()
