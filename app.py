@@ -15,16 +15,20 @@ import json
 from google.oauth2.service_account import Credentials
 
 def salvar_em_google_sheets(dados_dict):
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    import gspread
+    from google.oauth2.service_account import Credentials
+
+    scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
     
-    # Carrega credenciais direto dos segredos do Streamlit
     creds_dict = dict(st.secrets["GOOGLE_CREDENTIALS"])
     creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
     client = gspread.authorize(creds)
 
-    # Usa o ID da planilha diretamente
-    sheet = client.open_by_key("18y3RRHOPvkeO3N10DNbIvtCwUvNWrYSS5VIMVFQC4ks").sheet1
+    # Abrir a planilha diretamente pelo ID
+    planilha_id = "18y3RRHOPvkeO3N10DNbIvtCwUvNWrYSS5VIMVFQC4ks"
+    sheet = client.open_by_key(planilha_id).sheet1
 
+    # Inserir dados
     headers = list(dados_dict.keys())
     values = list(dados_dict.values())
 
