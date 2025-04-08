@@ -172,9 +172,9 @@ def formulario_despesas():
     st.session_state["dados_salvos"] = True
     st.rerun()
     
-if st.session_state.get("dados_salvos"):
-    st.success("✅ Dados salvos com sucesso!")
-    st.session_state["dados_salvos"] = False
+    if st.session_state.get("dados_salvos"):
+        st.success("✅ Dados salvos com sucesso!")
+        st.session_state["dados_salvos"] = False
 
 def gerenciar_usuarios():
     st.title("👥 Gerenciador de Usuários")
