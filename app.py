@@ -170,7 +170,7 @@ def formulario_despesas():
     df_total.to_excel(arquivo_saida, index=False)
     registrar_log(st.session_state["usuario"], "salvou dados")
     st.session_state["dados_salvos"] = True
-    st.experimental_rerun()
+    st.rerun()
     
 if st.session_state.get("dados_salvos"):
     st.success("✅ Dados salvos com sucesso!")
