@@ -168,8 +168,13 @@ def formulario_despesas():
         df_total = df_novo
         
     df_total.to_excel(arquivo_saida, index=False)
-    st.success("✅ Dados salvos com sucesso!")
     registrar_log(st.session_state["usuario"], "salvou dados")
+    st.session_state["dados_salvos"] = True
+    st.experimental_rerun()
+    
+if st.session_state.get("dados_salvos"):
+    st.success("✅ Dados salvos com sucesso!")
+    st.session_state["dados_salvos"] = False
 
 def gerenciar_usuarios():
     st.title("👥 Gerenciador de Usuários")
