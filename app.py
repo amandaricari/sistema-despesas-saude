@@ -143,7 +143,7 @@ def formulario_despesas():
         valor = st.number_input(f"{despesa} (R$)", min_value=0.0, format="%.2f")
         valores[despesa] = valor
 
-if st.button("Salvar Dados"):
+    if st.button("Salvar Dados"):
     if not unidade or not competencia:
         st.warning("Por favor, selecione a unidade e a competência.")
         st.stop()
