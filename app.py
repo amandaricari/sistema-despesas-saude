@@ -10,33 +10,30 @@ from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 
-import json
 import gspread
 from google.oauth2.service_account import Credentials
 
 def salvar_em_google_sheets(dados_dict):
-    # Lê as credenciais do secrets
-    creds_json = st.secrets["GOOGLE_CREDENTIALS"]
-    creds_dict = json.loads(creds_json)
+    # Usar diretamente como dicionário
+    creds_dict = st.secrets["GOOGLE_CREDENTIALS"]
 
-    # Define o escopo de acesso
+    # Escopos de acesso ao Google Sheets e Drive
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
 
     client = gspread.authorize(creds)
 
-    # Abre a planilha e aba
+    # Acessar planilha
     sheet = client.open("dados_despesas").sheet1
 
-    # Cabeçalhos e valores
     headers = list(dados_dict.keys())
     values = list(dados_dict.values())
 
-    # Insere cabeçalhos caso planilha esteja vazia
+    # Inserir cabeçalho se necessário
     if sheet.row_count == 0 or sheet.cell(1, 1).value is None:
         sheet.insert_row(headers, 1)
 
-    # Adiciona os dados
+    # Adicionar linha de dados
     sheet.append_row(values, value_input_option="USER_ENTERED")
 
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="wide")
