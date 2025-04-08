@@ -14,28 +14,34 @@ import gspread
 import json
 from google.oauth2.service_account import Credentials
 
+import base64
+import pygsheets
+
 def salvar_em_google_sheets(dados_dict):
-    import gspread
-    from google.oauth2.service_account import Credentials
+    # Decodifica o segredo salvo como string base64 (armazenado no secrets.toml)
+    client_secret_b64 = st.secrets["GDRIVE_BASE64"]
+    client_secret_json = base64.b64decode(client_secret_b64).decode("utf-8")
 
-    scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-    
-    creds_dict = dict(st.secrets["GOOGLE_CREDENTIALS"])
-    creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
-    client = gspread.authorize(creds)
+    # Salva em um arquivo temporário
+    with open("client_secret.json", "w") as f:
+        f.write(client_secret_json)
 
-    # Abrir a planilha diretamente pelo ID
-    planilha_id = "18y3RRHOPvkeO3N10DNbIvtCwUvNWrYSS5VIMVFQC4ks"
-    sheet = client.open_by_key(planilha_id).sheet1
+    # Autentica usando pygsheets com client_secret.json
+    gc = pygsheets.authorize(client_secret='client_secret.json')
 
-    # Inserir dados
-    headers = list(dados_dict.keys())
-    values = list(dados_dict.values())
+    # Abre a planilha pelo ID
+    sh = gc.open_by_key("18y3RRHOPvkeO3N10DNbIvtCwUvNWrYSS5VIMVFQC4ks")
+    wks = sh.sheet1
 
-    if sheet.row_count == 0 or sheet.cell(1, 1).value is None:
-        sheet.insert_row(headers, 1)
+    # Lê os dados atuais
+    df_atual = wks.get_as_df(empty_value="")
 
-    sheet.append_row(values, value_input_option="USER_ENTERED")
+    # Adiciona nova linha
+    nova_linha = pd.DataFrame([dados_dict])
+    df_total = pd.concat([df_atual, nova_linha], ignore_index=True)
+
+    # Escreve de volta
+    wks.set_dataframe(df_total, (1, 1))
 
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="wide")
 
