@@ -10,6 +10,28 @@ from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+def salvar_em_google_sheets(dados_dict):
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+    client = gspread.authorize(creds)
+
+    # Abre a planilha pelo nome
+    sheet = client.open("dados_despesas").sheet1
+
+    # Converte o dicionário em lista ordenada
+    headers = list(dados_dict.keys())
+    values = list(dados_dict.values())
+
+    # Insere cabeçalhos se estiver vazia
+    if sheet.row_count == 0 or sheet.cell(1, 1).value is None:
+        sheet.insert_row(headers, 1)
+
+    sheet.append_row(values, value_input_option="USER_ENTERED")
+
+
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="wide")
 
 st.markdown("""
@@ -162,16 +184,8 @@ def formulario_despesas():
         }
         dados.update(valores)
 
-        df_novo = pd.DataFrame([dados])
-        arquivo_saida = "dados_despesas.xlsx"
+        salvar_em_google_sheets(dados)
 
-        if os.path.exists(arquivo_saida):
-            df_existente = pd.read_excel(arquivo_saida)
-            df_total = pd.concat([df_existente, df_novo], ignore_index=True)
-        else:
-            df_total = df_novo
-
-        df_total.to_excel(arquivo_saida, index=False)
         registrar_log(st.session_state["usuario"], "salvou dados")
         st.session_state["dados_salvos"] = True
         st.rerun()
