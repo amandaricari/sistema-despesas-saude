@@ -10,8 +10,9 @@ from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 
-import gspread
+import json
 from google.oauth2.service_account import Credentials
+import gspread
 
 def salvar_em_google_sheets(dados_dict):
     scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
