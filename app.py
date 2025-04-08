@@ -11,17 +11,16 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 
 def salvar_em_google_sheets(dados_dict):
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+    scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+    creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
     client = gspread.authorize(creds)
 
     # Abre a planilha pelo nome
     sheet = client.open("dados_despesas").sheet1
 
-    # Converte o dicionário em lista ordenada
     headers = list(dados_dict.keys())
     values = list(dados_dict.values())
 
@@ -30,7 +29,6 @@ def salvar_em_google_sheets(dados_dict):
         sheet.insert_row(headers, 1)
 
     sheet.append_row(values, value_input_option="USER_ENTERED")
-
 
 st.set_page_config(page_title="Sistema de Despesas - Saúde", layout="wide")
 
