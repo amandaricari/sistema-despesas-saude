@@ -17,11 +17,13 @@ from google.oauth2.service_account import Credentials
 def salvar_em_google_sheets(dados_dict):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     
+    # Carrega credenciais direto dos segredos do Streamlit
     creds_dict = dict(st.secrets["GOOGLE_CREDENTIALS"])
     creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
     client = gspread.authorize(creds)
 
-    sheet = client.open("dados_despesas").sheet1
+    # Usa o ID da planilha diretamente
+    sheet = client.open_by_key("18y3RRHOPvkeO3N10DNbIvtCwUvNWrYSS5VIMVFQC4ks").sheet1
 
     headers = list(dados_dict.keys())
     values = list(dados_dict.values())
